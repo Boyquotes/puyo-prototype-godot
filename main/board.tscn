@@ -1,0 +1,111 @@
+[gd_scene load_steps=3 format=3 uid="uid://7o7if5udfdxe"]
+
+[ext_resource type="Texture2D" uid="uid://bf140t8b6le6c" path="res://ui/field.png" id="1_3xlhi"]
+
+[sub_resource type="GDScript" id="GDScript_nms2y"]
+script/source = "# board.gd
+
+const ROWS = 6
+const COLS = 12
+
+class Board:
+	const EMPTY = -1
+
+	var cells = []
+
+	var active_puyo_pair = null
+
+	func _init():
+		for x in range(COLS):
+			var column = []
+			for y in range(ROWS):
+				column.append(EMPTY)
+			cells.append(column)
+
+	func set_cell(x: int, y: int, value: int) -> void:
+		cells[x][y] = value
+
+	func get_cell(x: int, y: int) -> int:
+		return cells[x][y]
+
+	func add_puyo_pair() -> void:
+		# Add a new Puyo pair to the board
+		pass
+
+	func check_for_matches() -> Array:
+		# Check the board for matching Puyo pairs
+		matches = []
+
+		for x in range(COLS):
+			for y in range(ROWS):
+				puyo_type = self.get_cell(x, y)
+				if puyo_type != EMPTY:
+					if match = self.find_match(x, y, puyo_type)
+						if len(match) >= 4:
+							matches.append(match)
+
+		return matches
+
+	func find_match(x: int, y: int, puyo_type: int, visited: Array = null) -> Array:
+		if visited == null:
+			visited = []
+
+		if x < 0 or x >= COLS or y < 0 or y >= ROWS:
+			return []
+
+		if (x, y) in visited:
+			return []
+
+		visited.append((x, y))
+
+		if self.get_cell(x, y) != puyo_type:
+			return []
+
+		up = self.find_match(x, y - 1, puyo_type, visited)
+		down = self.find_match(x, y + 1, puyo_type, visited)
+		left = self.find_match(x - 1, y, puyo_type, visited)
+		right = self.find_match(x + 1, y, puyo_type, visited)
+
+		return [(x, y)] + up + down + left + right
+
+	func remove_matches(matches: Array) -> void:
+		# Remove matching Puyo pairs from the board
+		for match in matches:
+			for (x, y) in match:
+				self.set_cell(x, y, EMPTY)
+
+		# Shift Puyo pairs down to fill empty spaces
+		for x in range(COLS):
+			for y in range(ROWS - 1, -1, -1):
+				if self.get_cell(x, y) == EMPTY:
+					self.shift_down(x, y)
+
+	func shift_down(x: int, y: int) -> void:
+		for y2 in range(y - 1, -1, -1):
+			puyo_type = self.get_cell(x, y2)
+			if puyo_type != EMPTY:
+				self.set_cell(x, y2, EMPTY)
+				self.set_cell(x, y, puyo_type)
+				return
+
+	func update() -> void:
+		# Update the active Puyo pair
+		if self.active_puyo_pair is None:
+			self.add_puyo_pair()
+		else:
+			self.update_active_puyo_pair()
+
+		# Check for matching Puyo pairs
+		matches = self.check_for_matches()
+		if matches:
+			self.remove_matches(matches)
+
+"
+
+[node name="Board" type="Node2D"]
+script = SubResource("GDScript_nms2y")
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(256, 304)
+scale = Vector2(1.35938, 1.40476)
+texture = ExtResource("1_3xlhi")

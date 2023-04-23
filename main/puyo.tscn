@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://bg66pmp3ebpe5"]
+
+[ext_resource type="Texture2D" uid="uid://bp5b2h1araeto" path="res://ui/puyo/green.png" id="1_i71nx"]
+[ext_resource type="Script" path="res://scripts/puyo.gd" id="2_41g32"]
+[ext_resource type="Texture2D" uid="uid://cpjrop0mb8y1e" path="res://ui/puyo/purple.png" id="3_lbw1d"]
+[ext_resource type="Texture2D" uid="uid://cpod34n2a6ul5" path="res://ui/puyo/blue.png" id="4_wassp"]
+[ext_resource type="Texture2D" uid="uid://2u8nwxpls78t" path="res://ui/puyo/red.png" id="5_c7sta"]
+[ext_resource type="Texture2D" uid="uid://xyeo3yyfnpit" path="res://ui/puyo/yellow.png" id="6_jugqr"]
+[ext_resource type="Script" path="res://scripts/score.gd" id="7_hqngq"]
+
+[node name="puyo" type="Node2D"]
+
+[node name="Green" type="Sprite2D" parent="."]
+position = Vector2(368, 280)
+texture = ExtResource("1_i71nx")
+script = ExtResource("2_41g32")
+
+[node name="Purple" type="Sprite2D" parent="."]
+position = Vector2(576, 344)
+texture = ExtResource("3_lbw1d")
+script = ExtResource("2_41g32")
+
+[node name="Blue" type="Sprite2D" parent="."]
+position = Vector2(672, 152)
+texture = ExtResource("4_wassp")
+script = ExtResource("2_41g32")
+
+[node name="Red" type="Sprite2D" parent="."]
+position = Vector2(920, 384)
+texture = ExtResource("5_c7sta")
+script = ExtResource("2_41g32")
+
+[node name="Yellow" type="Sprite2D" parent="."]
+position = Vector2(1120, 472)
+texture = ExtResource("6_jugqr")
+script = ExtResource("7_hqngq")
